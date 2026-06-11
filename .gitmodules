@@ -1,0 +1,3 @@
+[submodule "tools/master-password"]
+	path = tools/master-password
+	url = git@github.com:aironou/master-password.git
