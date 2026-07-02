@@ -1,0 +1,13 @@
+services:
+  blog-cli:
+    profiles:
+      - blog
+    extends:
+      file: blog/compose.yml
+      service: cli
+  master-password-cli:
+    profiles:
+      - tools/master-password
+    extends:
+      file: tools/master-password/compose.yml
+      service: cli
