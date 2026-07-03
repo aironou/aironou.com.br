@@ -1,0 +1,31 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-slim
+    steps:
+      - name: checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - name: build dist
+        run: make dist
+
+      - name: config AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          audience: sts.amazonaws.com
+          aws-region: sa-east-1
+          role-to-assume: arn:aws:iam::128529977626:role/aironou.com.br_upload@s3
+
+      - name: upload to S3
+        run: aws s3 cp dist/* s3://aironou.com.br-128529977626-sa-east-1-an/aironou.com.br
