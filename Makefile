@@ -2,7 +2,7 @@
 SHELL=/bin/sh
 
 DC = docker compose
-DC_RUN = $(DC) run --rm
+DC_RUN = $(DC) run --rm --user "$$(id -u):$$(id -g)" -e HOME=/tmp
 
 DC_RUN_BLOG = $(DC_RUN) blog-cli
 DC_RUN_MASTER_PASSWORD = $(DC_RUN) master-password-cli
