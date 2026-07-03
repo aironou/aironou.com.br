@@ -17,6 +17,9 @@ src/blog/node_modules: src/blog/package.json
 src/blog/dist: src/blog/node_modules
 	$(DC_RUN_BLOG) run dist
 
+src/blog:
+	git submodule update --init --recursive --remote src/blog
+
 src/blog/%:
 	git submodule update --init --recursive src/blog
 
@@ -36,6 +39,9 @@ src/tools/master-password/css/master-password.min.css: src/tools/master-password
 
 src/tools/master-password/js/master-password.min.js: src/tools/master-password/node_modules src/tools/master-password/js/master-password.js
 	$(DC_RUN_MASTER_PASSWORD) run build:js
+
+src/tools/master-password:
+	git submodule update --init --recursive --remote src/tools/master-password
 
 src/tools/master-password/%:
 	git submodule update --init --recursive src/tools/master-password
