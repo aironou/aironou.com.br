@@ -1,0 +1,72 @@
+name: update submodule
+
+on:
+  workflow_call:
+    inputs:
+      path:
+        required: true
+        type: string
+      label:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-slim
+    steps:
+      - name: checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - name: config user.email
+        run: git config --global user.email 'github-actions-bot@aironou.com.br'
+
+      - name: config user.name
+        run: git config --global user.name 'github-actions [bot]'
+
+      - name: git submodule update
+        id: git-submodule-update
+        run: |
+          make -B ${{ inputs.path }}
+          git add ${{ inputs.path }}
+          echo "revision=$(git -C ${{ inputs.path }} rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          if git diff --cached --quiet; then
+            echo "changed=0" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=1" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: create branch
+        id: create-branch
+        if: steps.git-submodule-update.outputs.changed == '1'
+        env:
+          BRANCH: chore/update-${{ inputs.label }}-${{ steps.git-submodule-update.outputs.revision }}
+        run: |
+          git checkout -b $BRANCH
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: commit
+        if: steps.git-submodule-update.outputs.changed == '1'
+        run: |
+          git commit -m "chore: update ${{ inputs.label }} to ${{ steps.git-submodule-update.outputs.revision }}"
+
+      - name: push
+        if: steps.git-submodule-update.outputs.changed == '1'
+        run: git push origin ${{ steps.create-branch.outputs.branch }}
+
+      - name: open pull request
+        if: steps.git-submodule-update.outputs.changed == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr create --base main --head ${{ steps.create-branch.outputs.branch }}
+
+      - name: set auto merge
+        if: steps.git-submodule-update.outputs.changed == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge ${{ steps.create-branch.outputs.branch }} --auto --rebase --delete-branch
