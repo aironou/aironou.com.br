@@ -1,0 +1,11 @@
+name: update blog
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update:
+    uses: ./.github/workflows/update-submodule.yml
+    with:
+      path: src/blog
+      label: blog
