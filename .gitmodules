@@ -1,6 +1,8 @@
 [submodule "src/tools/master-password"]
 	path = src/tools/master-password
 	url = git@github.com:aironou/master-password.git
+	branch = main
 [submodule "src/blog"]
 	path = src/blog
 	url = git@github.com:aironou/blog.git
+	branch = main
