@@ -29,4 +29,4 @@ jobs:
           role-to-assume: arn:aws:iam::128529977626:role/aironou.com.br_upload@s3
 
       - name: upload to S3
-        run: aws s3 cp dist/* s3://aironou.com.br-128529977626-sa-east-1-an/aironou.com.br
+        run: aws s3 sync dist/ s3://aironou.com.br-128529977626-sa-east-1-an/aironou.com.br/ --delete
