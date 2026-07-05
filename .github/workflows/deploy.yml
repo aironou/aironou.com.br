@@ -30,3 +30,6 @@ jobs:
 
       - name: upload to S3
         run: aws s3 sync dist/ s3://aironou.com.br-128529977626-sa-east-1-an/aironou.com.br/ --delete
+
+      - name: invalidate cloudfront
+        run: aws cloudfront create-invalidation --distribution-id E1EHU713S4BKYJ --paths "/*"
