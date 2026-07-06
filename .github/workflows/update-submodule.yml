@@ -57,7 +57,7 @@ jobs:
 
       - name: push
         if: steps.git-submodule-update.outputs.changed == '1'
-        run: git push origin ${{ steps.create-branch.outputs.branch }}
+        run: git push origin ${{ steps.create-branch.outputs.branch  -f
 
       - name: open pull request
         if: steps.git-submodule-update.outputs.changed == '1'
