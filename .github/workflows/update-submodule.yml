@@ -65,8 +65,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr create --base main --head ${{ steps.create-branch.outputs.branch }} --fill
 
-      - name: set auto merge
+      - name: auto merge
         if: steps.git-submodule-update.outputs.changed == '1'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr merge ${{ steps.create-branch.outputs.branch }} --auto --rebase --delete-branch
+        run: |
+          gh pr merge ${{ steps.create-branch.outputs.branch }} --rebase --delete-branch \
+          || gh pr merge ${{ steps.create-branch.outputs.branch }} --auto --rebase --delete-branch
