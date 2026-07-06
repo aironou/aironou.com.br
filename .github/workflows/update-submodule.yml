@@ -63,7 +63,7 @@ jobs:
         if: steps.git-submodule-update.outputs.changed == '1'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr create --base main --head ${{ steps.create-branch.outputs.branch }}
+        run: gh pr create --base main --head ${{ steps.create-branch.outputs.branch }} --fill
 
       - name: set auto merge
         if: steps.git-submodule-update.outputs.changed == '1'
