@@ -1,0 +1,12 @@
+name: manual deploy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  update:
+    uses: ./.github/workflows/deploy.yml

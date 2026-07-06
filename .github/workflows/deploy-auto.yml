@@ -1,0 +1,14 @@
+name: auto deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  update:
+    uses: ./.github/workflows/deploy.yml
