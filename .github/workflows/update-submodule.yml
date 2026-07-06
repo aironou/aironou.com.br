@@ -57,13 +57,13 @@ jobs:
 
       - name: push
         if: steps.git-submodule-update.outputs.changed == '1'
-        run: git push origin ${{ steps.create-branch.outputs.branch  -f
+        run: git push origin ${{ steps.create-branch.outputs.branch }} -f
 
       - name: open pull request
         if: steps.git-submodule-update.outputs.changed == '1'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr create --base main --head ${{ steps.create-branch.outputs.branch }} --fill
+        run: gh pr create --base main --head ${{ steps.create-branch.outputs.branch }}
 
       - name: set auto merge
         if: steps.git-submodule-update.outputs.changed == '1'
