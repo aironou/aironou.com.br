@@ -7,7 +7,15 @@ DC_RUN = $(DC) run --rm --user "$$(id -u):$$(id -g)" -e HOME=/tmp
 DC_RUN_BLOG = $(DC_RUN) blog-cli
 DC_RUN_MASTER_PASSWORD = $(DC_RUN) master-password-cli
 
-dist: src/blog/compose.yml src/tools/master-password/compose.yml dist/blog dist/tools/master-password
+dist: dist/index.html src/blog/compose.yml src/tools/master-password/compose.yml dist/blog dist/tools/master-password
+
+### > SITE
+
+dist/index.html: src/index.html
+	mkdir -p dist
+	cp src/index.html $@
+
+### < SITE
 
 ### > BLOG
 
